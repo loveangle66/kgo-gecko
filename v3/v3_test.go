@@ -1,6 +1,7 @@
 package coingecko
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -83,6 +84,18 @@ func TestCoinsList(t *testing.T) {
 	if item.ID != "01coin" {
 		t.FailNow()
 	}
+}
+
+func TestClient_CoinsMarket(t *testing.T) {
+	err := setupGock("json/coinsmarket.json", "/coins/markets")
+	list, err := c.CoinsMarket("cny", []string{"filecoin"}, "market_cap_desc", 100, 1, false, []string{"24h"})
+	if err != nil {
+		fmt.Printf("111 err:%+v\n", err)
+
+		t.FailNow()
+	}
+	item := (*list)[0]
+	fmt.Printf("ITEM: %+v\n", item)
 }
 
 // Util: Setup Gock
